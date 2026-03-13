@@ -54,19 +54,19 @@ def generate_html(games):
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Gamecube Games Collection</title>
+  <title>Sega Genesis Games Collection</title>
 
-  <link rel="icon" href="https://cdn.sdappnet.cloud/rtx/images/gamecube-icon.png" type="image/png">
-  <link rel="apple-touch-icon" href="https://cdn.sdappnet.cloud/rtx/images/gamecube-icon.png" sizes="180x180">
-  <link rel="icon" type="image/png" href="https://cdn.sdappnet.cloud/rtx/images/gamecube-icon.png" sizes="192x192">
-  <link rel="icon" type="image/png" href="https://cdn.sdappnet.cloud/rtx/images/gamecube-icon.png" sizes="512x512">
-  <meta itemprop="name" content="Gamecube Games Collection">
-  <meta property="og:title" content="Gamecube Games Collection">
+  <link rel="icon" href="https://cdn.sdappnet.cloud/rtx/images/sega-genesis-icon.png" type="image/png">
+  <link rel="apple-touch-icon" href="https://cdn.sdappnet.cloud/rtx/images/sega-genesis-icon.png" sizes="180x180">
+  <link rel="icon" type="image/png" href="https://cdn.sdappnet.cloud/rtx/images/sega-genesis-icon.png" sizes="192x192">
+  <link rel="icon" type="image/png" href="https://cdn.sdappnet.cloud/rtx/images/sega-genesis-icon.png" sizes="512x512">
+  <meta itemprop="name" content="Sega Genesis Games Collection">
+  <meta property="og:title" content="Sega Genesis Games Collection">
   <meta property="og:url" content="">
   <meta property="og:type" content="website">
-  <meta name="twitter:title" content="Gamecube Games Collection">
+  <meta name="twitter:title" content="Sega Genesis Games Collection">
   <meta name="twitter:card" content="summary_large_image">
-  <link rel="apple-touch-icon" href="https://cdn.sdappnet.cloud/rtx/images/gamecube-icon.png" sizes="180x180">
+  <link rel="apple-touch-icon" href="https://cdn.sdappnet.cloud/rtx/images/sega-genesis-icon.png" sizes="180x180">
 
   <style>
     body {{
@@ -99,6 +99,12 @@ def generate_html(games):
       z-index: 10;
     }}
 
+    .title-card-link {{
+      display: block;
+      text-decoration: none;
+      color: inherit;
+    }}
+
     .title-card-container {{
       width: 100%;
       position: relative;
@@ -117,11 +123,6 @@ def generate_html(games):
       height: 100%;
       object-fit: cover;
       transition: opacity 0.3s;
-    }}
-
-    /* Style for when image fails to load */
-    .title-card-image-container img.error {{
-      opacity: 0;
     }}
 
     .title-card-image-container .fallback-title {{
@@ -174,11 +175,6 @@ def generate_html(games):
       font-size: 80%;
     }}
 
-    a {{
-      text-decoration: none;
-      color: inherit;
-    }}
-
     /* Search container */
     #saved-search-container {{
       position: sticky;
@@ -222,13 +218,17 @@ def generate_html(games):
       margin-top: 5px;
     }}
 
+    /* Hide classes */
     .hidden-game {{
       display: none !important;
     }}
 
-    .highlight-saved {{
-      border: 3px solid #42991b;
-      box-shadow: 0 0 15px #42991b;
+    .title-card.image-failed {{
+      display: none !important;
+    }}
+
+    .title-card-link.hidden-game {{
+      display: none !important;
     }}
   </style>
 </head>
@@ -236,13 +236,13 @@ def generate_html(games):
 <body>
   <div id="saved-search-container">
     <div class="search-row">
-      <img src="https://cdn.sdappnet.cloud/rtx/images/gamecube-icon.png" class="icon" alt="Gamecube logo">
+      <img src="https://cdn.sdappnet.cloud/rtx/images/sega-genesis-icon.png" class="icon" alt="Sega Genesis logo">
       <input type="text" id="saved-search-input" placeholder="Search games...">
-      <a href="" target="_blank">
-        <img src="https://cdn.sdappnet.cloud/rtx/images/gamecube-controller.png" class="icon" alt="Gamecube">
+      <a href="https://www.ppsspp.org/" target="_blank">
+        <img src="https://cdn.sdappnet.cloud/rtx/images/sega-genesis-controller.png" class="icon" alt="Sega Genesis">
       </a>
-      <a href="https://cdn.sdappnet.cloud/rtx/gamecube-magazine.html" target="_blank">
-        <img src="https://cdn.sdappnet.cloud/rtx/images/gamecube-magazine.png" class="icon" alt="Gamecube Magazine">
+      <a href="https://cdn.sdappnet.cloud/rtx/sega-genesis_magazine.html" target="_blank">
+        <img src="https://cdn.sdappnet.cloud/rtx/images/sega-genesis_magazine.png" class="icon" alt="Sega Genesis Magazine">
       </a>
     </div>
     <div id="saved-results-count"></div>
@@ -256,9 +256,6 @@ def generate_html(games):
         
         if game['cover_url'] != PLACEHOLDER_IMAGE:
             cover_url = game['cover_url']
-            has_real_cover = True
-        elif game['3d_cover_url'] != PLACEHOLDER_IMAGE:
-            cover_url = game['3d_cover_url']
             has_real_cover = True
         else:
             cover_url = PLACEHOLDER_IMAGE
@@ -276,8 +273,8 @@ def generate_html(games):
                   src="{cover_url}"
                   loading="lazy"
                   title="{title}"
-                  onerror="this.classList.add('error'); this.src='{PLACEHOLDER_IMAGE}'; this.parentNode.querySelector('.fallback-title').style.display='flex';">
-                <div class="fallback-title" style="display: {title_display}; position: absolute; bottom: 0; left: 0; right: 0; background: linear-gradient(transparent, rgba(0,0,0,0.9)); color: white; padding: 15px 8px 8px 8px; font-size: 12px; text-align: center; font-weight: 500;">{title}</div>
+                  onerror="this.closest('.title-card').classList.add('image-failed');">
+                <div class="fallback-title" style="display: {title_display};">{title}</div>
               </div>
               <div class="fill-color-Playable card-body text-center py-1 my-0"><small><strong>Play</strong></small></div>
             </div>
@@ -288,13 +285,16 @@ def generate_html(games):
   </div>
 
   <script>
-    // Convert title cards to links
+    // Convert title cards to links for search
     function wrapCardsWithLinks() {{
       document.querySelectorAll('.title-card').forEach(card => {{
-        const serial = card.getAttribute('data-serial');
+        // Skip if image failed
+        if (card.classList.contains('image-failed')) return;
+
         const title = card.getAttribute('data-title-name');
         const status = card.getAttribute('data-title-status');
 
+        // Remove existing inner link
         const existingInnerLink = card.querySelector('a');
         if (existingInnerLink) {{
           while (existingInnerLink.firstChild) {{
@@ -311,67 +311,43 @@ def generate_html(games):
             .replace(/\\s+/g, '-')
             .replace(/-+/g, '-')
             .replace(/^-|-$/g, '');
-        }} else if (serial) {{
-          url_path = serial;
         }}
 
         if (url_path) {{
-          const urlParams = new URLSearchParams(window.location.search);
-          const targetUrl = urlParams.get('url');
           const link = document.createElement('a');
-
-          if (targetUrl) {{
-            link.href = targetUrl.replace(/\\/$/, '') + '/gamecube/' + url_path;
-          }} else {{
-            link.href = 'https://meyt.netlify.app/search/' + url_path + ' gamecube';
-          }}
-
+          link.href = 'https://meyt.netlify.app/search/' + url_path + ' sega genesis';
           link.className = 'title-card-link';
           link.rel = 'noopener noreferrer';
           link.target = '_blank';
           
           if (title) link.setAttribute('data-title-name', title);
-          if (serial) link.setAttribute('data-serial', serial);
           if (status) link.setAttribute('data-title-status', status);
 
           card.parentNode.insertBefore(link, card);
           link.appendChild(card);
-
-          const badge = card.querySelector('.fill-color-Playable, .status-badge');
-          if (badge && status) {{
-            badge.classList.add('status-' + status.toLowerCase());
-          }}
         }}
       }});
     }}
 
-    // Run link wrapping
-    wrapCardsWithLinks();
-    if (document.readyState === 'loading') {{
-      document.addEventListener('DOMContentLoaded', wrapCardsWithLinks);
-    }} else {{
-      wrapCardsWithLinks();
-    }}
+    // Run link wrapping after a delay
     setTimeout(wrapCardsWithLinks, 500);
 
-    // Search functionality
+    // Search functionality - target title-card-link elements
     document.getElementById('saved-search-input').addEventListener('input', function (e) {{
       const searchTerm = e.target.value.toLowerCase();
-      const cards = document.querySelectorAll('.title-card');
+      const links = document.querySelectorAll('.title-card-link');
       let count = 0;
 
-      cards.forEach(card => {{
-        const title = card.getAttribute('data-title-name') || '';
+      links.forEach(link => {{
+        const title = link.getAttribute('data-title-name') || '';
+        
         if (title.toLowerCase().includes(searchTerm) && searchTerm) {{
-          card.classList.remove('hidden-game');
-          card.classList.add('highlight-saved');
+          link.classList.remove('hidden-game');
           count++;
         }} else if (searchTerm) {{
-          card.classList.add('hidden-game');
-          card.classList.remove('highlight-saved');
+          link.classList.add('hidden-game');
         }} else {{
-          card.classList.remove('hidden-game');
-          card.classList.remove('highlight-saved');
+          link.classList.remove('hidden-game');
         }}
       }});
 
@@ -386,6 +362,13 @@ def generate_html(games):
         document.getElementById('saved-search-input').focus();
       }}
     }});
+
+    // Initial hide of any images that already failed
+    document.querySelectorAll('.title-card img').forEach(img => {{
+      if (img.complete && img.naturalHeight === 0) {{
+        img.closest('.title-card').classList.add('image-failed');
+      }}
+    }});
   </script>
 </body>
 
@@ -395,7 +378,7 @@ def generate_html(games):
     return html
 
 def main():
-    print("🎮 Gamecube Games Grid Generator (Xemu Style)")
+    print("🎮 Sega Genesis Games Grid Generator (Xemu Style)")
     print("=" * 50)
     
     games = load_games_data()
@@ -411,7 +394,7 @@ def main():
     print(f"✅ Website generated: {OUTPUT_HTML}")
     print(f"\n📊 Statistics:")
     print(f"   - Total games: {len(games)}")
-    print(f"   - With 2D covers: {sum(1 for g in games if g['cover_url'] != PLACEHOLDER_IMAGE)}")
+    print(f"   - With covers: {sum(1 for g in games if g['cover_url'] != PLACEHOLDER_IMAGE)}")
 
 if __name__ == "__main__":
     main()

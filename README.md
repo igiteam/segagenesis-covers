@@ -1,6 +1,6 @@
-# gamecube-covers
+# genesis_games_blastem-covers
 
-gamecube-covers
+genesis_games_blastem-covers
 
 python3 -m venv venv
 source venv/bin/activate
